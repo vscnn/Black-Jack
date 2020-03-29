@@ -12,7 +12,7 @@ module Deposit
     attr_reader :deposit
 
     def initialize
-      @deposit = 1000
+      @deposit = 100
     end
 
     def set_bet
@@ -21,6 +21,10 @@ module Deposit
 
     def won_bet
       @deposit += 20
+    end
+
+    def draw
+      @deposit += 10
     end
   end
 end
