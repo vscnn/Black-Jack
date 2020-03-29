@@ -92,8 +92,11 @@ class Game
   end
 
   def self.start(player, dealer)
+    refresh_cards
     @player = player
     @dealer = dealer
+    @player.update_cards
+    @dealer.update_cards
     get_cards(player)
     @player.send(:set_bet)
     get_cards(dealer)
