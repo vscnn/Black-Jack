@@ -28,5 +28,13 @@ class Player
   def update_cards
     @current_cards = []
   end
+
+  def show_current_cards
+    current_cards.collect { |card| card[:name] }.join(' ')
+  end
+
+  def hide_current_cards
+    '* ' * current_cards.length
+  end
 end
 
