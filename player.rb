@@ -30,38 +30,3 @@ class Player
   end
 end
 
-p = Player.new('Victor')
-d = Player.new('Dealer')
-loop do
-  puts 'Играть будете? (y/n)'
-  ans = gets.chomp
-  break if ans != 'y'
-  if ans == 'y'
-    Game.start(p, d)
-    puts "#{p.name}: #{p.current_value}"
-    puts "#{d.name}: #{d.current_value}"
-    puts "Банк игрока: #{p.deposit}$"
-    puts "Банк дилера: #{d.deposit}$"
-    puts '--------'
-    puts "1) Добавить еще карту\n2) Открыть карты"
-    a = gets.chomp
-    if a.to_i == 1
-      p.add_card
-      puts "#{p.name}: #{p.current_value}"
-      puts "#{d.name}: #{d.current_value}"
-      puts '--------'
-      Game.calc
-      puts "Банк игрока: #{p.deposit}$"
-      puts "Банк дилера: #{d.deposit}$"
-    elsif a.to_i == 2
-      puts "#{p.name}: #{p.current_value}"
-      puts "#{d.name}: #{d.current_value}"
-      puts '--------'
-      Game.calc
-      puts "Банк игрока: #{p.deposit}$"
-      puts "Банк дилера: #{d.deposit}$"
-    end
-  else
-    puts 'Ок, прощайте!'
-  end
-end

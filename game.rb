@@ -84,7 +84,7 @@ class Game
       puts 'Ничья'
     elsif ((21 - player_value) < (21 - dealer_value) && player_value <= 21) || dealer_value > 21
       @player.send(:won_bet)
-      puts 'Выиграил игрок'
+      puts 'Выиграл игрок'
     elsif ((21 - dealer_value) < (21 - player_value) && dealer_value <= 21) || player_value > 21
       @dealer.send(:won_bet)
       puts 'Выиграл дилер'
