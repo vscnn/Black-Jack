@@ -21,7 +21,6 @@ class Interface
     end
 
     def self.print_winner(winner, player, dealer)
-      puts "id" "#{winner}"
       case winner
         when 0
           puts "Победитель: #{player.name}"
@@ -94,5 +93,3 @@ class Interface
     end
   end
 end
-
-Interface.repl
