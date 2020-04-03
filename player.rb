@@ -1,16 +1,26 @@
-require_relative 'deposit'
 require_relative 'game'
 
 class Player
-  include Deposit
-
   attr_accessor :current_cards
-  attr_reader :name
+  attr_reader :name, :deposit
 
   def initialize(name)
     @name = name
+    @deposit = 100
     @current_cards = []
     super()
+  end
+
+  def set_bet
+    @deposit -= 10
+  end
+
+  def won_bet
+    @deposit += 20
+  end
+
+  def draw
+    @deposit += 10
   end
 
   def current_value

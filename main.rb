@@ -1,7 +1,7 @@
 require_relative 'interface'
 
 def start
-  repl
+  Interface.repl
 end
 
 start
