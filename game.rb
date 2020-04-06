@@ -1,27 +1,22 @@
-require_relative 'cards'
+require_relative 'deck'
+require_relative 'hand'
 
 class Game
   def initialize(player, dealer)
-    Cards.generate
+    Deck.generate
     @player = player
     @dealer = dealer
-    @player.update_cards
-    @dealer.update_cards
-    self.class.get_cards(player)
+    @player_hand = Hand.new(@player)
+    @dealer_hand = Hand.new(@dealer)
+    puts 'updated'
     @player.send(:set_bet)
-    self.class.get_cards(dealer)
     @dealer.send(:set_bet)
   end
 
-  def self.get_cards(player, count = 2)
-    cards = player.instance_variable_get(:@current_cards)
-    count.times { cards << Cards.random }
-    count.times { player.instance_variable_set(:@current_cards, cards) }
-  end
-
   def calc
-    player_value = @player.current_value
-    dealer_value = @dealer.current_value
+    # TOFIX: https://take.ms/nkbju
+    player_value = @player_hand.current_value
+    dealer_value = @dealer_hand.current_value
     # 0 player win; 1 dealer win; 2 draw
     if player_value == dealer_value
       @dealer.send(:draw)

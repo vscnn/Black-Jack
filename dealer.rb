@@ -1,4 +1,3 @@
-require_relative 'game'
 require_relative 'player'
 
 class Dealer < Player
