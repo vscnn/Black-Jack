@@ -47,7 +47,7 @@ class Interface
     puts "Ваш банк: #{@player.deposit}$"
   end
 
-  def turn
+  def round
     @game = Game.new(@player, @dealer)
     @game.start
     print_current_card(@player, @dealer)
@@ -84,8 +84,7 @@ class Interface
       puts 'Играть будете? (y/n)'
       ans = gets.chomp
       break if ans != 'y'
-      next unless ans == 'y'
-      a = turn
+      a = round
       if a.to_i == 1
         @game.add_a_card(@player)
         case @dealer.turn(@game.deck)
