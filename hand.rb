@@ -1,5 +1,3 @@
-require_relative 'deck'
-
 class Hand
   attr_accessor :current_cards
 

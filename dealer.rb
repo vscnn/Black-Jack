@@ -1,5 +1,4 @@
 require_relative 'player'
-require_relative 'game'
 
 class Dealer < Player
   def initialize(name = '')

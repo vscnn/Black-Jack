@@ -20,93 +20,95 @@ class Interface
     '* ' * player.hand.current_cards.length
   end
 
-  def print_winner(winner, player, dealer)
+  def print_current_card(player, dealer)
+    puts "Ваши карты: #{show_current_cards(player)}"
+    puts "Карты дилера: #{hide_current_cards(dealer)}"
+  end
+
+  def print_winner(player, dealer)
+    winner = @game.calc
     case winner
     when 0
-        puts "Победитель: #{player.name}"
+      puts "Победитель: #{player.name}"
     when 1
-        puts "Победитель: #{dealer.name}"
+      puts "Победитель: #{dealer.name}"
     when 2
-        puts 'Ничья'
+      puts 'Ничья'
     end
   end
 
-  def endgame?(player, dealer)
-    if dealer.deposit.zero?
+  def start
+    puts 'Добро пожаловать в блекджек...'
+    puts 'Ваше имя: '
+    name = gets.chomp
+    @player = Player.new(name)
+    @dealer = Dealer.new('Dealer')
+    puts "Здравствуйте, #{name}"
+    puts "Ваш банк: #{@player.deposit}$"
+  end
+
+  def turn
+    @game = Game.new(@player, @dealer)
+    @game.start
+    print_current_card(@player, @dealer)
+    puts '--------'
+    puts "1) Добавить еще карту\n2) Открыть карты\n3) Пропустить ход"
+    a = gets.chomp
+  end
+
+  def endgame?
+    if @dealer.deposit.zero?
       puts 'Вы обобрали несчастного дилера до нитки!'
-    elsif player.deposit.zero?
+      true
+    elsif @player.deposit.zero?
       puts 'Вы всё проиграли, идите домой!'
+      true
     end
+  end
+
+  def print_hr
+    puts '--------'
+  end
+
+  def print_results
+    print_current_values(@player, @dealer)
+    print_hr
+    print_winner(@player, @dealer)
+    print_current_deposits(@player, @dealer)
   end
 
   def repl
-    puts 'Добро пожаловать в блекджек...'
-    puts 'Ваше имя: '
-
-    name = gets.chomp
-    p = Player.new(name)
-    d = Dealer.new('Dealer')
-
-    puts "Здравствуйте, #{name}"
-    puts "Ваш банк: #{p.deposit}$"
-
+    start
     loop do
-      # Вынести всё в подметоды
-      break if endgame?(p, d)
+      break if endgame?
       puts 'Играть будете? (y/n)'
       ans = gets.chomp
       break if ans != 'y'
       next unless ans == 'y'
-      g = Game.new(p, d)
-      g.start
-      puts "Ваши карты: #{show_current_cards(p)}"
-      puts "Карты дилера: #{hide_current_cards(d)}"
-      puts '--------'
-      puts "1) Добавить еще карту\n2) Открыть карты\n3) Пропустить ход"
-      a = gets.chomp
+      a = turn
       if a.to_i == 1
-        g.add_a_card(p)
-        case d.turn(g.deck)
+        @game.add_a_card(@player)
+        case @dealer.turn(@game.deck)
         when 0
-            puts 'Диллер пропустил ход'
+          puts 'Диллер пропустил ход'
         end
-        print_current_values(p, d)
-        puts '--------'
-        winner = g.calc
-        print_winner(winner, p, d)
-        print_current_deposits(p, d)
+        print_results
       elsif a.to_i == 2
-        d.turn(g.deck)
-        print_current_values(p, d)
-        puts '--------'
-        winner = g.calc
-        print_winner(winner, p, d)
-        print_current_deposits(p, d)
+        @dealer.turn(@game.deck)
+        print_results
       elsif a.to_i == 3
-        d.turn(g.deck)
-        puts "Ваши карты: #{show_current_cards(p)}"
-        puts "Карты дилера: #{hide_current_cards(d)}"
-        puts '--------'
+        @dealer.turn(@game.deck)
+        print_current_card(@player, @dealer)
+        print_hr
         puts "1) Добавить еще карту\n2) Открыть карты"
         b = gets.chomp
         if b.to_i == 1
-          g.add_a_card(p)
-          print_current_values(p, d)
-          puts '--------'
-          winner = g.calc
-          print_winner(winner, p, d)
-          print_current_deposits(p, d)
+          @game.add_a_card(@player)
+          print_results
         elsif b.to_i == 2
-          print_current_values(p, d)
-          puts '--------'
-          winner = g.calc
-          print_winner(winner, p, d)
-          print_current_deposits(p, d)
+          print_results
         end
       end
     end
   end
 end
-
-i = Interface.new
-i.repl
